@@ -8,9 +8,9 @@
     - [x] `npx create-next-app` でNext.jsプロジェクトを作成
     - [x] TypeScriptとTailwind CSSの設定を完了
     - [x] Gitリポジトリを初期化し、最初のコミットを行う
-- [ ] **UIセットアップ**
-    - [ ] `npx shadcn-ui@latest init` を実行
-    - [ ] 共通で使用する`shadcn/ui`コンポーネントをインストール (Button, Card, Table, Input, Dialog)
+- [x] **UIセットアップ**
+    - [x] `npx shadcn-ui@latest init` を実行
+    - [x] 共通で使用する`shadcn/ui`コンポーネントをインストール (Button, Card, Table, Input, Dialog)
 - [ ] **ウォレット連携**
     - [ ] `wagmi` と `viem` をインストール
     - [ ] `features/wallet/providers/Web3Provider.tsx` を作成し、wagmiの初期設定を記述
