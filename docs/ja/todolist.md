@@ -4,10 +4,10 @@
 
 ## Sprint 1: 基盤構築
 
-- [ ] **プロジェクト初期化**
-    - [ ] `npx create-next-app` でNext.jsプロジェクトを作成
-    - [ ] TypeScriptとTailwind CSSの設定を完了
-    - [ ] Gitリポジトリを初期化し、最初のコミットを行う
+- [x] **プロジェクト初期化**
+    - [x] `npx create-next-app` でNext.jsプロジェクトを作成
+    - [x] TypeScriptとTailwind CSSの設定を完了
+    - [x] Gitリポジトリを初期化し、最初のコミットを行う
 - [ ] **UIセットアップ**
     - [ ] `npx shadcn-ui@latest init` を実行
     - [ ] 共通で使用する`shadcn/ui`コンポーネントをインストール (Button, Card, Table, Input, Dialog)
@@ -18,7 +18,7 @@
     - [ ] `features/wallet/components/ConnectButton.tsx` を作成
     - [ ] ヘッダーに`ConnectButton`を配置し、ウォレットの接続・切断ができることを確認
 - [ ] **ドキュメントとディレクトリ構成**
-    - [ ] `docs/` フォルダを作成し、設計書・要件定義書を配置
+    - [x] `docs/` フォルダを作成し、設計書・要件定義書を配置
     - [ ] 設計書に基づき、`features`, `lib`, `store` などのディレクトリを作成
 
 ---
