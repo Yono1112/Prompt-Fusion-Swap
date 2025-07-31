@@ -11,12 +11,12 @@
 - [x] **UIセットアップ**
     - [x] `npx shadcn-ui@latest init` を実行
     - [x] 共通で使用する`shadcn/ui`コンポーネントをインストール (Button, Card, Table, Input, Dialog)
-- [ ] **ウォレット連携**
+- [x] **ウォレット連携**
     - [x] `wagmi` と `viem` をインストール
-    - [ ] `features/wallet/providers/Web3Provider.tsx` を作成し、wagmiの初期設定を記述
-    - [ ] ルートレイアウト (`layout.tsx`) を`Web3Provider`でラップする
-    - [ ] `features/wallet/components/ConnectButton.tsx` を作成
-    - [ ] ヘッダーに`ConnectButton`を配置し、ウォレットの接続・切断ができることを確認
+    - [x] `features/wallet/providers/Web3Provider.tsx` を作成し、wagmiの初期設定を記述
+    - [x] ルートレイアウト (`layout.tsx`) を`Web3Provider`でラップする
+    - [x] `features/wallet/components/ConnectButton.tsx` を作成
+    - [x] ヘッダーに`ConnectButton`を配置し、ウォレットの接続・切断ができることを確認
 - [x] **ドキュメントとディレクトリ構成**
     - [x] `docs/` フォルダを作成し、設計書・要件定義書を配置
     - [x] 設計書に基づき、`features`, `lib`, `store` などのディレクトリを作成
