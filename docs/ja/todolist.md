@@ -45,7 +45,7 @@
 ## Sprint 3: LLMバックエンド
 
 - [ ] **LLM APIセットアップ**
-    - [ ] `.env.local` にGeminiのAPIキーを追加
+    - [x] `.env.local` にGeminiのAPIキーを追加
     - [ ] `lib/llm/client.ts` を作成し、Gemini APIを呼び出すクライアント関数を実装
 - [ ] **Function Calling実装**
     - [ ] `lib/llm/functions.ts` のようなファイルに、`get_token_balance`と`get_swap_quote`の関数スキーマを定義
