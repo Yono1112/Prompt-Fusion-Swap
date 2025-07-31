@@ -6,23 +6,23 @@ import { injected } from "wagmi/connectors";
 import { Button } from "@/components/ui/button";
 
 export function ConnectButton() {
-	const { address, isConnected } = useAccount();
-	const { connect } = useConnect();
-	const { disconnect } = useDisconnect();
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect();
+  const { disconnect } = useDisconnect();
 
-	if (isConnected) {
-		return (
-			<div>
-				<Button onClick={() => disconnect()}>
-					{`${address?.slice(0, 6)}...${address?.slice(-4)}`}
-				</Button>
-			</div>
-		);
-	}
+  if (isConnected) {
+    return (
+      <div>
+        <Button onClick={() => disconnect()}>
+          {`${address?.slice(0, 6)}...${address?.slice(-4)}`}
+        </Button>
+      </div>
+    );
+  }
 
-	return (
-		<Button onClick={() => connect({ connector: injected() })}>
-			ウォレットを接続
-		</Button>
-	);
+  return (
+    <Button onClick={() => connect({ connector: injected() })}>
+      ウォレットを接続
+    </Button>
+  );
 }
