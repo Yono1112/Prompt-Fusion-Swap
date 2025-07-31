@@ -25,13 +25,13 @@
 
 ## Sprint 2: ポートフォリオ表示
 
-- [ ] **バックエンド (APIプロキシ)**
-    - [ ] `app/api/portfolio/route.ts` を作成
-    - [ ] `.env.local` に1inchのAPIキーを追加
-    - [ ] `lib/1inch/sdk.ts` を作成
-    - [ ] `sdk.ts` に `1inch Wallet Balances API` を呼び出す関数を実装
-    - [ ] `sdk.ts` に `1inch Token Prices API` を呼び出す関数を実装
-    - [ ] APIルート内で、上記2つの関数を呼び出し、残高と価格を結合したデータを返すロジックを実装
+- [x] **バックエンド (APIプロキシ)**
+    - [x] `app/api/portfolio/route.ts` を作成
+    - [x] `.env.local` に1inchのAPIキーを追加
+    - [x] `lib/1inch/sdk.ts` を作成
+    - [x] `sdk.ts` に `1inch Wallet Balances API` を呼び出す関数を実装
+    - [x] `sdk.ts` に `1inch Token Prices API` を呼び出す関数を実装
+    - [x] APIルート内で、上記2つの関数を呼び出し、残高と価格を結合したデータを返すロジックを実装
 - [ ] **フロントエンド**
     - [ ] `PortfolioDashboard.tsx` と `AssetTable.tsx` のひな形を作成
     - [ ] `features/portfolio/hooks/usePortfolio.ts` を作成
