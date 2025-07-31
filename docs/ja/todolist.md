@@ -33,9 +33,9 @@
     - [x] `sdk.ts` に `1inch Token Prices API` を呼び出す関数を実装
     - [x] APIルート内で、上記2つの関数を呼び出し、残高と価格を結合したデータを返すロジックを実装
 - [ ] **フロントエンド**
-    - [ ] `PortfolioDashboard.tsx` と `AssetTable.tsx` のひな形を作成
-    - [ ] `features/portfolio/hooks/usePortfolio.ts` を作成
-    - [ ] `usePortfolio`フック内で、`/api/portfolio`エンドポイントを呼び出すロジックを実装
+    - [x] `PortfolioDashboard.tsx` と `AssetTable.tsx` のひな形を作成
+    - [x] `features/portfolio/hooks/usePortfolio.ts` を作成
+    - [x] `usePortfolio`フック内で、`/api/portfolio`エンドポイントを呼び出すロジックを実装
     - [ ] `AssetTable`にローディングスケルトンUIを実装
     * [ ] `page.tsx` で`PortfolioDashboard`を`React.Suspense`でラップする
     - [ ] 取得したポートフォリオデータをテーブルに正しく表示する
