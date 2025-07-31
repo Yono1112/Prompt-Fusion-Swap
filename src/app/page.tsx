@@ -1,3 +1,4 @@
+import { PortfolioDashboard } from "@/features/portfolio/components/PortfolioDashboard";
 import { ConnectButton } from "@/features/wallet/components/ConnectButton";
 
 export default function Home() {
@@ -8,11 +9,7 @@ export default function Home() {
         <ConnectButton />
       </header>
 
-      <div className="flex-grow flex items-center justify-center">
-        <p className="text-muted-foreground">
-          ポートフォリオを読み込むには、ウォレットを接続してください。
-        </p>
-      </div>
+      <PortfolioDashboard />
     </main>
   );
 }
