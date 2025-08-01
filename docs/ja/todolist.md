@@ -52,11 +52,11 @@
     * [x] `app/api/command/route.ts` を作成
     - [x] `route.ts`で、ユーザープロンプトと関数スキーマをGemini APIに送信するロジックを実装
     - [x] Gemini APIからのレスポンス（Function CallingのJSON）をコンソールに出力し、動作を確認
-- [ ] **フロントエンド連携 (初期)**
-    - [ ] `features/command/components/CommandBar.tsx` を作成
-    - [ ] `features/command/hooks/useCommandHandler.ts` を作成
-    - [ ] `CommandBar`から`useCommandHandler`を呼び出し、`/api/command`にPOSTリクエストを送信する
-    - [ ] バックエンドからのレスポンスをブラウザのコンソールに出力し、連携を確認
+- [x] **フロントエンド連携 (初期)**
+    - [x] `features/command/components/CommandBar.tsx` を作成
+    - [x] `features/command/hooks/useCommandHandler.ts` を作成
+    - [x] `CommandBar`から`useCommandHandler`を呼び出し、`/api/command`にPOSTリクエストを送信する
+    - [x] バックエンドからのレスポンスをブラウザのコンソールに出力し、連携を確認
 
 ---
 
