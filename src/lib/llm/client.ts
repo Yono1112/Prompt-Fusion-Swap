@@ -1,56 +1,39 @@
-// src/lib/llm/client.ts
-"use server";
+import { GoogleGenAI } from "@google/genai";
+import { getSwapQuoteDeclaration } from "./functions";
 
-import { GoogleGenAI, Type } from "@google/genai";
-
-const ai = new GoogleGenAI({});
-
-const weatherFunctionDeclaration = {
-  name: "get_current_temperature",
-  description: "Gets the current temperature for a given location.",
-  parameters: {
-    type: Type.OBJECT,
-    properties: {
-      location: {
-        type: Type.STRING,
-        description: "The city name, e.g. San Francisco",
-      },
-    },
-    required: ["location"],
-  },
-};
+// The client gets the API key from the environment variable `GEMINI_API_KEY`.
+const genAI = new GoogleGenAI({});
 
 /**
- * Gemini APIを呼び出し、テキスト応答を生成する簡易関数
+ * ユーザープロンプトを解釈し、呼び出すべき関数とその引数を返す
+ * @param prompt ユーザーが入力した自然言語のコマンド
+ * @returns Geminiが判断した関数呼び出し情報、またはnull
  */
-export async function runGemini() {
+export async function getAiFunctionCall(prompt: string) {
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: "What's the temperature in London?",
+    console.log("lite");
+    const response = await genAI.models.generateContent({
+      model: "gemini-2.5-flash-lite",
+      contents: prompt,
       config: {
         tools: [
           {
-            functionDeclarations: [weatherFunctionDeclaration],
+            functionDeclarations: [getSwapQuoteDeclaration],
           },
         ],
       },
     });
+
     if (response.functionCalls && response.functionCalls.length > 0) {
-      const functionCall = response.functionCalls[0]; // Assuming one function call
-      console.log(`Function to call: ${functionCall.name}`);
-      console.log(`Arguments: ${JSON.stringify(functionCall.args)}`);
-      // In a real app, you would call your actual function here:
-      // const result = await getCurrentTemperature(functionCall.args);
-      return `name: ${functionCall.name}, args: ${JSON.stringify(functionCall.args)}`;
+      const functionCall = response.functionCalls[0];
+      console.log("Function Call Detected:", functionCall);
+      return functionCall;
     } else {
-      console.log("No function call found in the response.");
-      console.log(response.text);
+      console.log("No function call detected. Text response:", response.text);
+      return null;
     }
-    console.log(response.text);
-    return "";
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    return "Failed to get response from AI.";
+    console.error("Gemini API Error in getAiFunctionCall:", error);
+    throw new Error("Failed to get response from AI.");
   }
 }
