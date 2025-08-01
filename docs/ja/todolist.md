@@ -62,14 +62,14 @@
 
 ## Sprint 4: E2Eスワップフロー
 
-- [ ] **バックエンド オーケストレーション**
-    - [ ] `execute_swap`の関数スキーマを定義
-    - [ ] `/api/command/route.ts`で、LLMからの`get_swap_quote`呼び出しに応じて1inchに見積もりを依頼するロジックを実装
-    - [ ] 見積もり結果をフロントエンドに返す
-- [ ] **フロントエンド 確認フロー**
-    - [ ] `features/command/components/ConfirmationDialog.tsx` を作成
-    - [ ] `useCommandHandler`を更新し、見積もりデータを状態として保持し、ダイアログの表示を制御する
-    - [ ] ユーザーがダイアログで「確認」を押したら、スワップ実行の意図を再度`/api/command`に送信する
+- [x] **バックエンド オーケストレーション**
+    - [x] `execute_swap`の関数スキーマを定義
+    - [x] `/api/command/route.ts`で、LLMからの`get_swap_quote`呼び出しに応じて1inchに見積もりを依頼するロジックを実装
+    - [x] 見積もり結果をフロントエンドに返す
+- [x] **フロントエンド 確認フロー**
+    - [x] `features/command/components/ConfirmationDialog.tsx` を作成
+    - [x] `useCommandHandler`を更新し、見積もりデータを状態として保持し、ダイアログの表示を制御する
+    - [x] ユーザーがダイアログで「確認」を押したら、スワップ実行の意図を再度`/api/command`に送信する
 - [ ] **実行ロジック**
     - [ ] `/api/command/route.ts`で、スワップ実行リクエストを処理するロジックを実装
     - [ ] 1inch Swap APIからトランザクションデータを取得する

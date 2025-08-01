@@ -118,6 +118,7 @@ export async function getSwapQuote(
     src: fromTokenAddress,
     dst: toTokenAddress,
     amount: amountInSmallestUnit,
+    includeTokensInfo: "true",
   });
 
   const url = `https://api.1inch.dev/swap/v6.1/${chainId}/quote?${params.toString()}`;

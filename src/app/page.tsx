@@ -5,9 +5,17 @@ import { ConnectButton } from "@/features/wallet/components/ConnectButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CommandBar } from "@/features/command/components/CommandBar";
 import { useCommandHandler } from "@/features/command/hooks/useCommandHandler";
+import { ConfirmationDialog } from "@/features/command/components/ConfirmationDialog";
 
 export default function Home() {
-  const { sendCommand, isLoading, response } = useCommandHandler();
+  const {
+    sendCommand,
+    isLoading,
+    quoteState,
+    isDialogOpen,
+    setIsDialogOpen,
+    handleConfirmSwap,
+  } = useCommandHandler();
 
   return (
     <main className="flex min-h-screen flex-col items-center p-8">
@@ -17,22 +25,22 @@ export default function Home() {
       </header>
 
       <PortfolioDashboard />
+
       <Card className="w-full max-w-4xl">
         <CardHeader>
           <CardTitle>AI Command Bar</CardTitle>
         </CardHeader>
         <CardContent>
           <CommandBar onSubmit={sendCommand} isLoading={isLoading} />
-          {response && (
-            <div className="mt-4 p-4 bg-secondary rounded-md">
-              <h3 className="font-semibold">Parsed Intent:</h3>
-              <pre className="mt-2 text-sm whitespace-pre-wrap">
-                {JSON.stringify(response, null, 2)}
-              </pre>
-            </div>
-          )}
         </CardContent>
       </Card>
+
+      <ConfirmationDialog
+        quoteState={quoteState}
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onConfirm={handleConfirmSwap}
+      />
     </main>
   );
 }

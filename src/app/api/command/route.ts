@@ -55,6 +55,7 @@ export async function POST(request: Request) {
         return NextResponse.json({
           type: "quote_received",
           quote,
+          fromAmount: amount,
           originalPrompt: prompt,
         });
       }
