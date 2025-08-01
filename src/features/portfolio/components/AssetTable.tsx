@@ -18,7 +18,6 @@ type Asset = {
   address: string;
   balance: string;
   price: string;
-  // トークンの詳細情報を追加（シンボル、小数点以下桁数など）
   tokenInfo?: {
     symbol: string;
     decimals: number;
@@ -81,22 +80,31 @@ export function AssetTable({ assets, isLoading }: AssetTableProps) {
         {assets.length > 0 ? (
           assets
             .filter((asset) => BigInt(asset.balance) > 0)
-            .map((asset) => (
-              <TableRow key={asset.address}>
-                <TableCell className="font-medium">
-                  {/* トークンシンボル。現状はアドレスを短縮表示 */}
-                  {`${asset.address.slice(0, 6)}...${asset.address.slice(-4)}`}
-                </TableCell>
-                <TableCell>
-                  {/* 1inch APIは最小単位で残高を返すため、ここでは仮に18桁でフォーマット */}
-                  {Number(formatUnits(BigInt(asset.balance), 18)).toFixed(4)}
-                </TableCell>
-                <TableCell className="text-right">
-                  {/* TODO: 価値の計算ロジックを実装 */}
-                  $0.00
-                </TableCell>
-              </TableRow>
-            ))
+            .map((asset) => {
+              // 価値の計算ロジック
+              // TODO: 現在は小数点以下を18桁で固定してるが、将来的にバックエンドから各トークンの正しいdecimalsを取得して使うべき
+              const decimals = asset.tokenInfo?.decimals || 18;
+              const balanceInUnits = parseFloat(
+                formatUnits(BigInt(asset.balance), decimals),
+              );
+              const pricePerUnit = parseFloat(asset.price);
+              const totalValue = balanceInUnits * pricePerUnit;
+
+              return (
+                <TableRow key={asset.address}>
+                  <TableCell className="font-medium">
+                    {asset.tokenInfo?.symbol ||
+                      `${asset.address.slice(0, 6)}...${asset.address.slice(
+                        -4,
+                      )}`}
+                  </TableCell>
+                  <TableCell>{balanceInUnits.toFixed(4)}</TableCell>
+                  <TableCell className="text-right">
+                    {`$${totalValue.toFixed(2)}`}
+                  </TableCell>
+                </TableRow>
+              );
+            })
         ) : (
           <TableRow>
             <TableCell colSpan={3} className="text-center">
