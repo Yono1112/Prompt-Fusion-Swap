@@ -1,4 +1,5 @@
 // src/lib/1inch/sdk.ts
+import { parseUnits } from "viem";
 
 /**
  * 指定されたウォレットアドレスのトークン残高を取得
@@ -85,6 +86,60 @@ export async function getTokensPrices(
     return data;
   } catch (error) {
     console.error("An error occurred while fetching token prices:", error);
+    throw error;
+  }
+}
+
+/**
+ * 1inch Swap APIからスワップの見積もり（クオート）を取得
+ * @param chainId チェーンID
+ * @param fromTokenAddress スワップ元のトークンアドレス
+ * @param toTokenAddress スワップ先のトークンアドレス
+ * @param amount スワップする量（フォーマットされていない人間が読める単位、例: "1.5"）
+ * @param fromAddress スワップを実行するユーザーのウォレットアドレス
+ * @returns 1inch APIからのスワップ見積もりデータ
+ */
+export async function getSwapQuote(
+  chainId: number,
+  fromTokenAddress: string,
+  toTokenAddress: string,
+  amount: string,
+) {
+  const apiKey = process.env.ONEINCH_API_KEY;
+  if (!apiKey) {
+    throw new Error("1INCH_API_KEY is not set in environment variables.");
+  }
+
+  // APIは最小単位の数値を要求するため、量を変換（ここでは仮に18桁）
+  // TODO: 本来は各トークンのdecimalsに合わせて変換する必要がある
+  const amountInSmallestUnit = parseUnits(amount, 18).toString();
+
+  const params = new URLSearchParams({
+    src: fromTokenAddress,
+    dst: toTokenAddress,
+    amount: amountInSmallestUnit,
+  });
+
+  const url = `https://api.1inch.dev/swap/v6.1/${chainId}/quote?${params.toString()}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("Failed to fetch swap quote:", errorData);
+      throw new Error(`Failed to fetch swap quote. Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("An error occurred while fetching swap quote:", error);
     throw error;
   }
 }
