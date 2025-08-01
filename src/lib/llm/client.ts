@@ -1,5 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
-import { getSwapQuoteDeclaration } from "./functions";
+import {
+  getSwapQuoteDeclaration,
+  getTokenBalanceDeclaration,
+} from "./functions";
 
 // The client gets the API key from the environment variable `GEMINI_API_KEY`.
 const genAI = new GoogleGenAI({});
@@ -18,7 +21,10 @@ export async function getAiFunctionCall(prompt: string) {
       config: {
         tools: [
           {
-            functionDeclarations: [getSwapQuoteDeclaration],
+            functionDeclarations: [
+              getSwapQuoteDeclaration,
+              getTokenBalanceDeclaration,
+            ],
           },
         ],
       },

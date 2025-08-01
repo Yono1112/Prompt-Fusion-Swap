@@ -25,3 +25,21 @@ export const getSwapQuoteDeclaration = {
     required: ["fromToken", "toToken", "amount"],
   },
 };
+
+/**
+ * 特定トークンの残高を取得するためのFunction Declaration
+ */
+export const getTokenBalanceDeclaration = {
+  name: "get_token_balance",
+  description: "Gets the balance of a specific token in the user's wallet.",
+  parameters: {
+    type: Type.OBJECT,
+    properties: {
+      tokenSymbol: {
+        type: Type.STRING,
+        description: "The symbol of the token to check, e.g., 'ETH', 'USDC'",
+      },
+    },
+    required: ["tokenSymbol"],
+  },
+};

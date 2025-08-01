@@ -44,14 +44,14 @@
 
 ## Sprint 3: LLMバックエンド
 
-- [ ] **LLM APIセットアップ**
+- [x] **LLM APIセットアップ**
     - [x] `.env.local` にGeminiのAPIキーを追加
-    - [ ] `lib/llm/client.ts` を作成し、Gemini APIを呼び出すクライアント関数を実装
-- [ ] **Function Calling実装**
-    - [ ] `lib/llm/functions.ts` のようなファイルに、`get_token_balance`と`get_swap_quote`の関数スキーマを定義
-    * [ ] `app/api/command/route.ts` を作成
-    - [ ] `route.ts`で、ユーザープロンプトと関数スキーマをGemini APIに送信するロジックを実装
-    - [ ] Gemini APIからのレスポンス（Function CallingのJSON）をコンソールに出力し、動作を確認
+    - [x] `lib/llm/client.ts` を作成し、Gemini APIを呼び出すクライアント関数を実装
+- [x] **Function Calling実装**
+    - [x] `lib/llm/functions.ts` のようなファイルに、`get_token_balance`と`get_swap_quote`の関数スキーマを定義
+    * [x] `app/api/command/route.ts` を作成
+    - [x] `route.ts`で、ユーザープロンプトと関数スキーマをGemini APIに送信するロジックを実装
+    - [x] Gemini APIからのレスポンス（Function CallingのJSON）をコンソールに出力し、動作を確認
 - [ ] **フロントエンド連携 (初期)**
     - [ ] `features/command/components/CommandBar.tsx` を作成
     - [ ] `features/command/hooks/useCommandHandler.ts` を作成
