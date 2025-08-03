@@ -115,12 +115,12 @@ export function AssetTable({ assets, isLoading }: AssetTableProps) {
                         alt={`${tokenInfo.name} logo`}
                         width={32}
                         height={32}
-                        className="rounded-full bg-gray-200"
+                        className="rounded-full bg-secondary"
                       />
                       <div>
-                        <div>{tokenInfo.name}</div>
+                        <div>{tokenInfo.symbol}</div>
                         <div className="text-xs text-muted-foreground">
-                          {tokenInfo.symbol}
+                          {tokenInfo.name}
                         </div>
                       </div>
                     </div>

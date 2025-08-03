@@ -19,27 +19,29 @@ export default function Home() {
   } = useCommandHandler();
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-8">
+    <main className="flex min-h-screen flex-col items-center px-4 pt-8 md:px-24 md:pt-12">
       <header className="w-full max-w-5xl flex justify-between items-center">
         <h1 className="text-lg font-semibold">Prompt Fusion Swap</h1>
         <ConnectButton />
       </header>
 
-      <PortfolioDashboard />
+      <div className="w-full max-w-4xl flex flex-col gap-8 mt-12">
+        <PortfolioDashboard />
 
-      <Card className="w-full max-w-4xl">
-        <CardHeader>
-          <CardTitle>AI Command Bar</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <CommandBar onSubmit={sendCommand} isLoading={isLoading} />
-          {isLoading && statusMessage && (
-            <div className="mt-4 text-center text-muted-foreground animate-pulse">
-              <p>{statusMessage}</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>AI Command Bar</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CommandBar onSubmit={sendCommand} isLoading={isLoading} />
+            {isLoading && statusMessage && (
+              <div className="mt-4 text-center text-muted-foreground animate-pulse">
+                <p>{statusMessage}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
 
       <ConfirmationDialog
         quoteState={quoteState}
