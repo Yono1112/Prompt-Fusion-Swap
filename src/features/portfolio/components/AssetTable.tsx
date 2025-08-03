@@ -13,6 +13,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatUnits } from "viem";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export type Asset = {
   address: string;
@@ -56,7 +57,13 @@ const SkeletonRows = () => (
 );
 
 export function AssetTable({ assets, isLoading }: AssetTableProps) {
-  if (isLoading) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient || isLoading) {
     return (
       <Table>
         <TableHeader>
@@ -75,7 +82,9 @@ export function AssetTable({ assets, isLoading }: AssetTableProps) {
 
   return (
     <Table>
-      <TableCaption>A list of your assets in the wallet.</TableCaption>
+      {assets.length > 0 && (
+        <TableCaption>A list of your assets in the wallet.</TableCaption>
+      )}
       <TableHeader>
         <TableRow>
           <TableHead className="w-[400px]">Asset</TableHead>
