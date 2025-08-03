@@ -11,6 +11,7 @@ export default function Home() {
   const {
     sendCommand,
     isLoading,
+    statusMessage,
     quoteState,
     isDialogOpen,
     setIsDialogOpen,
@@ -32,6 +33,11 @@ export default function Home() {
         </CardHeader>
         <CardContent>
           <CommandBar onSubmit={sendCommand} isLoading={isLoading} />
+          {isLoading && statusMessage && (
+            <div className="mt-4 text-center text-muted-foreground animate-pulse">
+              <p>{statusMessage}</p>
+            </div>
+          )}
         </CardContent>
       </Card>
 

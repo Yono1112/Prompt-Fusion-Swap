@@ -2,8 +2,14 @@
 
 import { NextResponse } from "next/server";
 import { getAiFunctionCall } from "@/lib/llm/client";
-import { getSwapQuote } from "@/lib/1inch/sdk";
+import {
+  checkAllowance,
+  getApproveTransaction,
+  getSwapQuote,
+  getSwapTransactionData,
+} from "@/lib/1inch/sdk";
 import { getTokenAddress } from "@/lib/tokens";
+import { parseUnits } from "viem";
 
 type GetSwapQuoteArgs = {
   fromToken: string;
@@ -17,13 +23,73 @@ type GetTokenBalanceArgs = {
 
 export async function POST(request: Request) {
   try {
-    const { prompt, chainId, walletAddress } = await request.json();
+    const { prompt, chainId, walletAddress, action, quoteState, tokenAddress } =
+      await request.json();
+    console.log(
+      `prompt: ${prompt}, chainId: ${chainId}, walletAddress: ${walletAddress}`,
+    );
 
-    if (!prompt || !chainId || !walletAddress) {
+    if (!chainId || !walletAddress) {
       return NextResponse.json(
-        { error: "Prompt, chainId, and walletAddress are required" },
+        { error: "chainId, and walletAddress are required" },
         { status: 400 },
       );
+    }
+
+    if (action === "check_allowance") {
+      const { srcToken } = quoteState.quote;
+      const { fromAmount } = quoteState;
+      const amountInSmallestUnit = parseUnits(fromAmount, srcToken.decimals);
+
+      const allowance = await checkAllowance(
+        chainId,
+        srcToken.address,
+        walletAddress,
+      );
+
+      return NextResponse.json({
+        type: "allowance_checked",
+        allowance,
+        requiredAmount: amountInSmallestUnit.toString(),
+      });
+    }
+
+    if (action === "get_approve_transaction") {
+      const txData = await getApproveTransaction(chainId, tokenAddress);
+      return NextResponse.json({ type: "approve_transaction", tx: txData });
+    }
+
+    if (action === "execute_swap") {
+      if (!quoteState) {
+        return NextResponse.json(
+          { error: "quoteState is required for execution" },
+          { status: 400 },
+        );
+      }
+
+      const { srcToken, dstToken } = quoteState.quote;
+      const { fromAmount } = quoteState;
+
+      if (!srcToken || !dstToken) {
+        return NextResponse.json(
+          { error: "Invalid quote state provided" },
+          { status: 400 },
+        );
+      }
+
+      console.log("POST getSwapTransactionData");
+      const txData = await getSwapTransactionData(
+        chainId,
+        srcToken.address,
+        dstToken.address,
+        fromAmount,
+        walletAddress,
+      );
+
+      return NextResponse.json({
+        type: "transaction_data",
+        tx: txData.tx,
+      });
     }
 
     const functionCall = await getAiFunctionCall(prompt);

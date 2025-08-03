@@ -144,3 +144,144 @@ export async function getSwapQuote(
     throw error;
   }
 }
+
+/**
+ * 指定されたトークンのAllowance（許可額）を確認
+ * @param chainId チェーンID
+ * @param tokenAddress 確認するトークンのアドレス
+ * @param walletAddress ユーザーのウォレットアドレス
+ * @returns 許可額（最小単位の文字列）
+ */
+export async function checkAllowance(
+  chainId: number,
+  tokenAddress: string,
+  walletAddress: string,
+) {
+  const apiKey = process.env.ONEINCH_API_KEY;
+  if (!apiKey) {
+    throw new Error("ONEINCH_API_KEY is not set in environment variables.");
+  }
+
+  const params = new URLSearchParams({
+    tokenAddress,
+    walletAddress,
+  });
+
+  // const url = `https://api.1inch.dev/approve/v6.0/${chainId}/allowance?${params.toString()}`;
+  const url = `https://api.1inch.dev/swap/v6.1/${chainId}/approve/allowance?${params.toString()}`;
+
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    console.error("Failed to check allowance:", errorData);
+    throw new Error(`Failed to check allowance. Status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data.allowance;
+}
+
+/**
+ * トークンをApprove（承認）するためのトランザクションデータを取得
+ * @param chainId チェーンID
+ * @param tokenAddress Approveするトークンのアドレス
+ * @param amount 承認する数量（オプション、無制限にする場合は指定しない）
+ * @returns Approve用のトランザクションデータ
+ */
+export async function getApproveTransaction(
+  chainId: number,
+  tokenAddress: string,
+  amount?: string,
+) {
+  const apiKey = process.env.ONEINCH_API_KEY;
+  if (!apiKey) {
+    throw new Error("ONEINCH_API_KEY is not set in environment variables.");
+  }
+
+  const params: Record<string, string> = { tokenAddress };
+  if (amount) {
+    params.amount = amount;
+  }
+
+  // const url = `https://api.1inch.dev/approve/v6.0/${chainId}/transaction?${new URLSearchParams(
+  //   params,
+  // ).toString()}`;
+  const url = `https://api.1inch.dev/swap/v6.1/${chainId}/approve/transaction?${new URLSearchParams(
+    params,
+  ).toString()}`;
+
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${apiKey}` },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    console.error("Failed to get approve transaction:", errorData);
+    throw new Error(
+      `Failed to get approve transaction. Status: ${response.status}`,
+    );
+  }
+  return await response.json();
+}
+
+/**
+ * 1inch Swap APIからスワップを実行するためのトランザクションデータを取得
+ * @param chainId チェーンID
+ * @param fromTokenAddress スワップ元のトークンアドレス
+ * @param toTokenAddress スワップ先のトークンアドレス
+ * @param amount スワップする量（フォーマットされていない人間が読める単位、例: "1.5"）
+ * @param fromAddress スワップを実行するユーザーのウォレットアドレス
+ * @returns 1inch APIからのスワップトランザクションデータ
+ */
+
+export async function getSwapTransactionData(
+  chainId: number,
+  fromTokenAddress: string,
+  toTokenAddress: string,
+  amount: string,
+  fromAddress: string,
+) {
+  const apiKey = process.env.ONEINCH_API_KEY;
+  if (!apiKey) {
+    throw new Error("1INCH_API_KEY is not set in environment variables.");
+  }
+
+  // TODO: 本来は各トークンのdecimals（小数点以下の桁数）に合わせて変換する必要がありますが、
+  const amountInSmallestUnit = parseUnits(amount, 18).toString();
+
+  const params = new URLSearchParams({
+    src: fromTokenAddress,
+    dst: toTokenAddress,
+    amount: amountInSmallestUnit,
+    from: fromAddress,
+    origin: fromAddress,
+    slippage: "1", // スリッページ許容度を1%に設定
+  });
+
+  const url = `https://api.1inch.dev/swap/v6.1/${chainId}/swap?${params.toString()}`;
+
+  try {
+    console.log("fetch getSwapTransactionData");
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+    });
+    console.log("success getSwapTransactionData");
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("Failed to fetch swap data:", errorData);
+      throw new Error(`Failed to fetch swap quote. Status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("An error occurred while fetching swap data:", error);
+    throw error;
+  }
+}

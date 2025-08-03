@@ -11,7 +11,9 @@ type CommandBarProps = {
 };
 
 export function CommandBar({ onSubmit, isLoading }: CommandBarProps) {
-  const [prompt, setPrompt] = useState("swap 1.5 ETH for USDC");
+  const [prompt, setPrompt] = useState(
+    "0.0001のWETHをUSDCにスワップしてください",
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

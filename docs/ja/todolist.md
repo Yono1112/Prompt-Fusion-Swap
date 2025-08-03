@@ -70,11 +70,11 @@
     - [x] `features/command/components/ConfirmationDialog.tsx` を作成
     - [x] `useCommandHandler`を更新し、見積もりデータを状態として保持し、ダイアログの表示を制御する
     - [x] ユーザーがダイアログで「確認」を押したら、スワップ実行の意図を再度`/api/command`に送信する
-- [ ] **実行ロジック**
-    - [ ] `/api/command/route.ts`で、スワップ実行リクエストを処理するロジックを実装
-    - [ ] 1inch Swap APIからトランザクションデータを取得する
-    - [ ] トランザクションデータをフロントエンドに返す
-    - [ ] フロントエンドで`wagmi`の`useSendTransaction`を使い、ユーザーに署名を要求する
+- [x] **実行ロジック**
+    - [x] `/api/command/route.ts`で、スワップ実行リクエストを処理するロジックを実装
+    - [x] 1inch Swap APIからトランザクションデータを取得する
+    - [x] トランザクションデータをフロントエンドに返す
+    - [x] フロントエンドで`wagmi`の`useSendTransaction`を使い、ユーザーに署名を要求する
 
 ---
 
