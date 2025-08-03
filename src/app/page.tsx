@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CommandBar } from "@/features/command/components/CommandBar";
 import { useCommandHandler } from "@/features/command/hooks/useCommandHandler";
 import { ConfirmationDialog } from "@/features/command/components/ConfirmationDialog";
+import Image from "next/image";
 
 export default function Home() {
   const {
@@ -21,7 +22,16 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center px-4 pt-8 md:px-24 md:pt-12">
       <header className="w-full max-w-5xl flex justify-between items-center">
-        <h1 className="text-lg font-semibold">Prompt Fusion Swap</h1>
+        <div className="flex items-center gap-4">
+          <Image
+            src="/logo.png"
+            alt="Prompt Fusion Swap Logo"
+            width={40}
+            height={40}
+            className="rounded-md"
+          />
+          <h1 className="text-2xl font-bold">Prompt Fusion Swap</h1>
+        </div>
         <ConnectButton />
       </header>
 
