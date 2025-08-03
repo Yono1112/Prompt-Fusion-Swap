@@ -33,7 +33,7 @@ export function ConnectButton() {
 
   return (
     <Button onClick={() => connect({ connector: injected() })}>
-      ウォレットを接続
+      Connect Wallet
     </Button>
   );
 }
