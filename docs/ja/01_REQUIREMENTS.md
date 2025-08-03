@@ -52,8 +52,42 @@
 
 ## 6. 1inch APIの依存関係 ✅
 
-* `Wallet Balances API`
-* `Token Prices API`
-* `Classic Swap API`
-* `Fusion API`
-* `Limit Order Protocol API` (ストレッチゴール)
+1. Balance API
+
+    目的: 特定のウォレットアドレスが保有するトークンとその残高を取得します。
+
+    該当関数: getWalletBalances
+
+    エンドポイント: https://api.1inch.dev/balance/v1.2/{chainId}/balances/{walletAddress}
+
+2. Spot Price API
+
+    目的: 一つ以上のトークンの現在価格をUSDで取得します。
+
+    該当関数: getTokensPrices
+
+    エンドポイント: https://api.1inch.dev/price/v1.1/{chainId}/{address}
+
+3. Token API
+
+    目的: トークンの詳細情報（シンボル、名前、ロゴなど）を取得します。
+
+    該当関数: getTokensInfo
+
+    エンドポイント: https://api.1inch.dev/token/v1.2/{chainId}/custom/{address}
+
+4. Swap API
+
+    目的: トークンスワップの見積もり取得、アプルーブ状況の確認、トランザクションデータの生成など、スワップに関する一連の操作を行います。
+
+    該当関数: getSwapQuote, checkAllowance, getApproveTransaction, getSwapTransactionData
+
+    エンドポイント:
+
+        /swap/v6.1/{chainId}/quote （見積もり取得）
+
+        /swap/v6.1/{chainId}/approve/allowance （アプルーブ状況確認）
+
+        /swap/v6.1/{chainId}/approve/transaction （アプルーブ用データ取得）
+
+        /swap/v6.1/{chainId}/swap （スワップ用データ取得）
