@@ -56,34 +56,40 @@ export async function getTokensPrices(
     throw new Error("1INCH_API_KEY is not set in environment variables.");
   }
 
-  const url = `https://api.1inch.dev/price/v1.1/${chainId}`;
-
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${apiKey}`,
-  };
-
-  const body = JSON.stringify({
-    tokens: tokenAddresses,
-  });
-
   try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers,
-      body,
+    // 各アドレスに対して個別に価格取得APIを呼び出すプロミスの配列を作成
+    const fetchPromises = tokenAddresses.map(async (address) => {
+      const url = `https://api.1inch.dev/price/v1.1/${chainId}/${address}?currency=USD`;
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error(
+          `Failed to fetch price for token ${address}: ${response.status}`,
+        );
+        // エラーの場合は、このトークンの価格をnullとして扱う
+        return null;
+      }
+      // レスポンスは {"0x...": "price"} の形式なのでそのまま返す
+      return await response.json();
     });
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error("Failed to fetch token prices:", errorData);
-      throw new Error(
-        `Failed to fetch token prices. Status: ${response.status}`,
-      );
-    }
+    // すべての価格取得リクエストを並列で実行
+    const results = await Promise.all(fetchPromises);
 
-    const data = await response.json();
-    return data;
+    // 結果を一つのオブジェクトに統合
+    const pricesMap: Record<string, string> = {};
+    results.forEach((priceObject) => {
+      if (priceObject) {
+        Object.assign(pricesMap, priceObject);
+      }
+    });
+
+    return pricesMap;
   } catch (error) {
     console.error("An error occurred while fetching token prices:", error);
     throw error;
@@ -334,4 +340,3 @@ export async function getTokensInfo(
     throw error;
   }
 }
-

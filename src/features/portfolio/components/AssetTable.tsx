@@ -90,9 +90,14 @@ export function AssetTable({ assets, isLoading }: AssetTableProps) {
             .map((asset) => {
               const tokenInfo = asset.tokenInfo!;
 
+              console.log(
+                `tokenInfo ${tokenInfo.name}: ${tokenInfo.decimals}, price: ${asset.price}`,
+              );
+
               const balanceInUnits = parseFloat(
                 formatUnits(BigInt(asset.balance), tokenInfo.decimals),
               );
+
               const pricePerUnit = parseFloat(asset.price);
               const totalValue = balanceInUnits * pricePerUnit;
 
@@ -108,9 +113,9 @@ export function AssetTable({ assets, isLoading }: AssetTableProps) {
                         className="rounded-full bg-gray-200"
                       />
                       <div>
-                        <div>{tokenInfo.symbol}</div>
+                        <div>{tokenInfo.name}</div>
                         <div className="text-xs text-muted-foreground">
-                          {tokenInfo.name}
+                          {tokenInfo.symbol}
                         </div>
                       </div>
                     </div>
