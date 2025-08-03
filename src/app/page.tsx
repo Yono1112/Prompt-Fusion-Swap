@@ -7,6 +7,7 @@ import { CommandBar } from "@/features/command/components/CommandBar";
 import { useCommandHandler } from "@/features/command/hooks/useCommandHandler";
 import { ConfirmationDialog } from "@/features/command/components/ConfirmationDialog";
 import Image from "next/image";
+import { SuccessDialog } from "@/features/command/components/SuccessDialog";
 
 export default function Home() {
   const {
@@ -17,6 +18,9 @@ export default function Home() {
     isDialogOpen,
     setIsDialogOpen,
     handleConfirmSwap,
+    isSuccessDialogOpen,
+    setIsSuccessDialogOpen,
+    successTxHash,
   } = useCommandHandler();
 
   return (
@@ -58,6 +62,12 @@ export default function Home() {
         isOpen={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onConfirm={handleConfirmSwap}
+      />
+
+      <SuccessDialog
+        txHash={successTxHash}
+        isOpen={isSuccessDialogOpen}
+        onOpenChange={setIsSuccessDialogOpen}
       />
     </main>
   );

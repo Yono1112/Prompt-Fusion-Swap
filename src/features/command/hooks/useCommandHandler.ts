@@ -22,6 +22,8 @@ export function useCommandHandler() {
   const [statusMessage, setStatusMessage] = useState("");
   const [quoteState, setQuoteState] = useState<QuoteState | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
+  const [successTxHash, setSuccessTxHash] = useState<string | null>(null);
 
   const { sendTransactionAsync } = useSendTransaction();
 
@@ -134,7 +136,8 @@ export function useCommandHandler() {
       setStatusMessage("Waiting for swap confirmation...");
       await waitForTransactionReceipt(config, { hash: swapTxHash });
 
-      alert(`Swap successful! Transaction hash: ${swapTxHash}`);
+      setSuccessTxHash(swapTxHash);
+      setIsSuccessDialogOpen(true);
     } catch (error) {
       console.error("Swap process failed", error);
       alert("An error occurred during the swap process.");
@@ -152,5 +155,8 @@ export function useCommandHandler() {
     isDialogOpen,
     setIsDialogOpen,
     handleConfirmSwap,
+    isSuccessDialogOpen,
+    setIsSuccessDialogOpen,
+    successTxHash,
   };
 }
