@@ -285,3 +285,47 @@ export async function getSwapTransactionData(
     throw error;
   }
 }
+
+/**
+ * @param chainId チェーンID
+ * @param tokenAddresses 情報を取得したいトークンのアドレスの配列
+ * @returns トークンアドレスをキー、トークン情報を値とするオブジェクト
+ */
+export async function getTokensInfo(
+  chainId: number,
+  tokenAddresses: string[]
+): Promise<Record<string, any>> {
+  const apiKey = process.env.ONEINCH_API_KEY;
+  if (!apiKey) {
+    throw new Error("ONEINCH_API_KEY is not set in environment variables.");
+  }
+
+  const addressesParam = tokenAddresses.join(",");
+
+  const url = `https://api.1inch.dev/token/v1.2/${chainId}/custom/${addressesParam}`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("Failed to fetch tokens info:", errorData);
+      throw new Error(`Failed to fetch tokens info. Status: ${response.status}`);
+    }
+    const tokensArray = await response.json();
+    const tokensMap: Record<string, any> = {};
+    for (const token of tokensArray) {
+      tokensMap[token.address.toLowerCase()] = token;
+    }
+    return tokensMap;
+
+  } catch (error) {
+    console.error("An error occurred while fetching tokens info:", error);
+    throw error;
+  }
+}
