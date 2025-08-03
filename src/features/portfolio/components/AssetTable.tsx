@@ -99,10 +99,6 @@ export function AssetTable({ assets, isLoading }: AssetTableProps) {
             .map((asset) => {
               const tokenInfo = asset.tokenInfo!;
 
-              console.log(
-                `tokenInfo ${tokenInfo.name}: ${tokenInfo.decimals}, price: ${asset.price}`,
-              );
-
               const balanceInUnits = parseFloat(
                 formatUnits(BigInt(asset.balance), tokenInfo.decimals),
               );
