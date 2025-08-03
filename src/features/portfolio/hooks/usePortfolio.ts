@@ -3,12 +3,7 @@
 
 import { useAccount } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
-
-type Asset = {
-  address: string;
-  balance: string;
-  price: string;
-};
+import { Asset } from "../components/AssetTable";
 
 const fetchPortfolio = async (chainId?: number, address?: `0x${string}`) => {
   if (!chainId || !address) {

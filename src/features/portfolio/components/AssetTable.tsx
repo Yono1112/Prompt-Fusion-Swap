@@ -12,17 +12,18 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatUnits } from "viem";
+import Image from "next/image";
 
-// APIから受け取るアセットデータの型
-type Asset = {
+export type Asset = {
   address: string;
   balance: string;
   price: string;
-  tokenInfo?: {
+  tokenInfo: {
     symbol: string;
+    name: string;
     decimals: number;
     logoURI: string;
-  };
+  } | null;
 };
 
 type AssetTableProps = {
@@ -35,13 +36,19 @@ const SkeletonRows = () => (
     {[...Array(3)].map((_, i) => (
       <TableRow key={i}>
         <TableCell>
-          <Skeleton className="h-8 w-48" />
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-8 w-8 rounded-full" />
+            <div className="space-y-1">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-3 w-24" />
+            </div>
+          </div>
         </TableCell>
         <TableCell>
-          <Skeleton className="h-8 w-24" />
+          <Skeleton className="h-5 w-24" />
         </TableCell>
         <TableCell className="text-right">
-          <Skeleton className="h-8 w-24 ml-auto" />
+          <Skeleton className="h-5 w-24 ml-auto" />
         </TableCell>
       </TableRow>
     ))}
@@ -79,28 +86,41 @@ export function AssetTable({ assets, isLoading }: AssetTableProps) {
       <TableBody>
         {assets.length > 0 ? (
           assets
-            .filter((asset) => BigInt(asset.balance) > 0)
+            .filter((asset) => BigInt(asset.balance) > 0 && asset.tokenInfo)
             .map((asset) => {
-              // 価値の計算ロジック
-              // TODO: 現在は小数点以下を18桁で固定してるが、将来的にバックエンドから各トークンの正しいdecimalsを取得して使うべき
-              const decimals = asset.tokenInfo?.decimals || 18;
+              const tokenInfo = asset.tokenInfo!;
+
               const balanceInUnits = parseFloat(
-                formatUnits(BigInt(asset.balance), decimals),
+                formatUnits(BigInt(asset.balance), tokenInfo.decimals),
               );
               const pricePerUnit = parseFloat(asset.price);
               const totalValue = balanceInUnits * pricePerUnit;
 
               return (
                 <TableRow key={asset.address}>
-                  <TableCell className="font-medium">
-                    {asset.tokenInfo?.symbol ||
-                      `${asset.address.slice(0, 6)}...${asset.address.slice(
-                        -4,
-                      )}`}
+                  <TableCell>
+                    <div className="flex items-center gap-3 font-medium">
+                      <Image
+                        src={tokenInfo.logoURI}
+                        alt={`${tokenInfo.name} logo`}
+                        width={32}
+                        height={32}
+                        className="rounded-full bg-gray-200"
+                      />
+                      <div>
+                        <div>{tokenInfo.symbol}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {tokenInfo.name}
+                        </div>
+                      </div>
+                    </div>
                   </TableCell>
-                  <TableCell>{balanceInUnits.toFixed(4)}</TableCell>
+                  <TableCell>{balanceInUnits.toFixed(5)}</TableCell>
                   <TableCell className="text-right">
-                    {`$${totalValue.toFixed(2)}`}
+                    {`$${totalValue.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}`}
                   </TableCell>
                 </TableRow>
               );

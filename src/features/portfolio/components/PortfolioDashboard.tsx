@@ -15,6 +15,7 @@ import { useAccount } from "wagmi";
 export function PortfolioDashboard() {
   const { isConnected } = useAccount();
   const { data: assets, isLoading } = usePortfolio();
+  console.log("PortfolioDashboard, ", assets);
 
   return (
     <Card className="w-full max-w-4xl">

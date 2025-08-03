@@ -36,3 +36,27 @@ export function getTokenAddress(
   }
   return TOKENS_BY_CHAIN[chainId]?.[upperSymbol];
 }
+
+export const NATIVE_ASSET_INFO_BY_CHAIN: {
+  [chainId: number]: {
+    symbol: string;
+    name: string;
+    decimals: number;
+    logoURI: string;
+  };
+} = {
+  1: {
+    symbol: "ETH",
+    name: "Ethereum",
+    decimals: 18,
+    logoURI:
+      "https://token.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+  },
+  137: {
+    symbol: "MATIC",
+    name: "Matic Token",
+    decimals: 18,
+    logoURI:
+      "https://token.1inch.io/0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0.png",
+  },
+};

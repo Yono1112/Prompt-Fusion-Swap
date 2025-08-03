@@ -293,39 +293,45 @@ export async function getSwapTransactionData(
  */
 export async function getTokensInfo(
   chainId: number,
-  tokenAddresses: string[]
+  tokenAddresses: string[],
 ): Promise<Record<string, any>> {
   const apiKey = process.env.ONEINCH_API_KEY;
   if (!apiKey) {
     throw new Error("ONEINCH_API_KEY is not set in environment variables.");
   }
 
-  const addressesParam = tokenAddresses.join(",");
-
-  const url = `https://api.1inch.dev/token/v1.2/${chainId}/custom/${addressesParam}`;
-
   try {
-    const response = await fetch(url, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
+    const fetchPromises = tokenAddresses.map(async (address) => {
+      const url = `https://api.1inch.dev/token/v1.2/${chainId}/custom/${address}`;
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.error(
+          `Failed to fetch info for token ${address}: ${response.status}`,
+        );
+        return null;
+      }
+      return await response.json();
     });
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error("Failed to fetch tokens info:", errorData);
-      throw new Error(`Failed to fetch tokens info. Status: ${response.status}`);
-    }
-    const tokensArray = await response.json();
-    const tokensMap: Record<string, any> = {};
-    for (const token of tokensArray) {
-      tokensMap[token.address.toLowerCase()] = token;
-    }
-    return tokensMap;
+    const results = await Promise.all(fetchPromises);
 
+    const tokensMap: Record<string, any> = {};
+    results.forEach((token) => {
+      if (token && token.address) {
+        tokensMap[token.address.toLowerCase()] = token;
+      }
+    });
+
+    return tokensMap;
   } catch (error) {
     console.error("An error occurred while fetching tokens info:", error);
     throw error;
   }
 }
+
